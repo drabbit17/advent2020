@@ -1,5 +1,6 @@
 from typing import List
 import collections
+import math
 
 
 def load_txt_file(file_path: str) -> List[str]:
@@ -42,7 +43,7 @@ def problem_2a(data: List[str]) -> int:
 
 
 def problem_2b(data: List[str]) -> int:
-    data_parsed = [[w.strip() for w in e.split(":")] for e in data]    
+    data_parsed = [[w.strip() for w in e.split(":")] for e in data]
     matches = []
     for e in data_parsed:
         boundaries, letter = e[0].split(" ")
@@ -51,4 +52,29 @@ def problem_2b(data: List[str]) -> int:
         if (int(low_l==letter) + int(high_l==letter)) == 1:
             matches.append(e)
     return len(matches)
+
+
+def problem_3a(data: List[str], horizontal_skips: List[int], vertical_skip: int = 1) -> List[int]:
+    vals = []
+
+    for skip in horizontal_skips:
+        trees = 0
+        pointer = 0
+        horizontal_length = len(data[0])
+        for row in data[::vertical_skip]:
+            if row[pointer]=="#":
+                trees += 1
+
+            pointer+=skip
+            if pointer>=horizontal_length:
+                pointer = pointer%horizontal_length
+
+        vals.append(trees)
+    return vals
+
+
+def problem_3b(data: List[str]) -> List[int]:
+    vals_1 = problem_3a(data, horizontal_skips=[1, 3, 5, 7], vertical_skip=1)
+    vals_2 = problem_3a(data, horizontal_skips=[1], vertical_skip=2)
+    return math.prod(vals_1) * math.prod(vals_2)
 
