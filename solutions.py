@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Dict
 import collections
 import math
+import re
 
 
 def load_txt_file(file_path: str) -> List[str]:
@@ -77,4 +78,18 @@ def problem_3b(data: List[str]) -> List[int]:
     vals_1 = problem_3a(data, horizontal_skips=[1, 3, 5, 7], vertical_skip=1)
     vals_2 = problem_3a(data, horizontal_skips=[1], vertical_skip=2)
     return math.prod(vals_1) * math.prod(vals_2)
+
+
+def problem_4_convert_input_to_list_of_dict(data: List[str]) -> List[Dict]:
+    regex_key_val = re.compile(r"(\w+):(#{0,1}\w+)")
+    vals = [re.findall(regex_key_val, e) for e in "\n".join(data).split("\n\n")]
+    return [{k:v for k,v in e} for e in vals]
+
+def problem_4a(data: List[str]) -> int:
+    expected_fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
+    passports = problem_4_convert_input_to_list_of_dict(data)
+    valid_count = 0
+    for passport in passports:
+        valid_count += all(field in passport for field in expected_fields)
+    return valid_count
 
