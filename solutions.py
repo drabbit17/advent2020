@@ -241,3 +241,26 @@ def problem7b(data):
         final_number+=int(number)
     return final_number
 
+def problem8a(data):
+    accumulator = 0
+    visited = []
+    pointer = 0
+    while pointer not in visited:
+        visited.append(pointer)
+        instruction, argument = data[pointer][:3], data[pointer][4:]
+        print(instruction, argument)
+        if instruction == "nop":
+            pointer += 1
+        else:
+            if argument[0]=="-":
+                shift = - int(argument[1:])
+            else:
+                shift = int(argument[1:])
+            if instruction=="acc":
+                accumulator+=shift
+                pointer+=1
+            else:
+                pointer+=shift
+    return accumulator 
+
+
