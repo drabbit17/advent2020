@@ -8,31 +8,33 @@ import re
 
 
 def load_txt_file(file_path: str) -> List[str]:
-    with open(file_path, 'r') as handle:
+    with open(file_path, "r") as handle:
         content = handle.read().splitlines()
     return content
 
 
-def problem_1a(data: List[str], target = 2020) -> int:
+def problem_1a(data: List[str], target=2020) -> int:
     data = [int(e) for e in data]
-    complementaries = {target-e: e for e in data}
+    complementaries = {target - e: e for e in data}
 
     for e in data:
         if complementaries.get(e):
-            return e*complementaries.get(e)
+            return e * complementaries.get(e)
+
 
 def problem_1b(data: List[str], target: int = 2020) -> int:
     data = sorted([int(e) for e in data])
 
     for idx, e in enumerate(data):
-        low, high = idx+1, len(data)-1
-        while low<high:
-            if data[low]+data[idx]+data[high]>target:
+        low, high = idx + 1, len(data) - 1
+        while low < high:
+            if data[low] + data[idx] + data[high] > target:
                 high -= 1
-            elif data[low]+data[idx]+data[high]<target:
-                low+=1
+            elif data[low] + data[idx] + data[high] < target:
+                low += 1
             else:
                 return data[low] * data[idx] * data[high]
+
 
 def problem_2a(data: List[str]) -> int:
     data_parsed = [[w.strip() for w in e.split(":")] for e in data]
@@ -41,7 +43,7 @@ def problem_2a(data: List[str]) -> int:
         boundaries, letter = e[0].split(" ")
         low, high = boundaries.split("-")
         letters = collections.Counter(e[1])
-        if int(low)<=letters[letter]<=int(high):
+        if int(low) <= letters[letter] <= int(high):
             matches.append(e)
     return len(matches)
 
@@ -52,8 +54,8 @@ def problem_2b(data: List[str]) -> int:
     for e in data_parsed:
         boundaries, letter = e[0].split(" ")
         low, high = boundaries.split("-")
-        low_l, high_l = e[1][int(low)-1], e[1][int(high)-1]
-        if (int(low_l==letter) + int(high_l==letter)) == 1:
+        low_l, high_l = e[1][int(low) - 1], e[1][int(high) - 1]
+        if (int(low_l == letter) + int(high_l == letter)) == 1:
             matches.append(e)
     return len(matches)
 
@@ -66,12 +68,12 @@ def problem_3a(data: List[str], horizontal_skips: List[int], vertical_skip: int 
         pointer = 0
         horizontal_length = len(data[0])
         for row in data[::vertical_skip]:
-            if row[pointer]=="#":
+            if row[pointer] == "#":
                 trees += 1
 
-            pointer+=skip
-            if pointer>=horizontal_length:
-                pointer = pointer%horizontal_length
+            pointer += skip
+            if pointer >= horizontal_length:
+                pointer = pointer % horizontal_length
 
         vals.append(trees)
     return vals
@@ -95,7 +97,7 @@ def problem_4a(data: List[str]) -> int:
 def problem_4_convert_input_to_list_of_dict(data: List[str]) -> List[Dict]:
     regex_key_val = re.compile(r"(\w+):(#{0,1}\w+)")
     vals = [re.findall(regex_key_val, e) for e in "\n".join(data).split("\n\n")]
-    return [{k:v for k,v in e} for e in vals]
+    return [{k: v for k, v in e} for e in vals]
 
 
 def problem_4b(data: List[str]) -> int:
@@ -121,16 +123,17 @@ def problem_4b(data: List[str]) -> int:
 
 
 def problem4b_check_height(height):
-	try:
-		number, metric = re.match(r"([0-9]{2,3})(cm|in)$", height).groups()
-		if metric == "cm":
-			return 150<=int(number)<=193
-		elif metric == "in":
-			return 59<=int(number)<=76
-		else:
-			return False
-	except:
-		return False
+    try:
+        number, metric = re.match(r"([0-9]{2,3})(cm|in)$", height).groups()
+        if metric == "cm":
+            return 150 <= int(number) <= 193
+        elif metric == "in":
+            return 59 <= int(number) <= 76
+        else:
+            return False
+    except Exception:
+        return False
+
 
 def problem5a(data):
     highest = 0
@@ -139,17 +142,19 @@ def problem5a(data):
         highest = max(ticket_pos, highest)
     return highest
 
+
 def problem5a_get_ticket_pos(ticket):
     row_info, column_info = ticket[:7], ticket[7:]
     start_row = problem5a_bisect(row_info, "B")
     start_column = problem5a_bisect(column_info, "R")
     return start_row * 8 + start_column
 
+
 def problem5a_bisect(data, forward_direction):
-    start_point, end_point = 1, 2**len(data)
+    start_point, end_point = 1, 2 ** len(data)
     for direction in data:
-        split_point = (end_point + start_point)//2
-        if direction==forward_direction:
+        split_point = (end_point + start_point) // 2
+        if direction == forward_direction:
             start_point = split_point
         else:
             end_point = split_point
@@ -162,9 +167,10 @@ def problem5b(data):
         positions.append(problem5a_get_ticket_pos(ticket))
     positions.sort()
     for idx, pos in enumerate(positions):
-        if pos>8 & pos <= 127*8:
-            if idx>0 and positions[idx-1]+1 != pos:
+        if pos > 8 & pos <= 127 * 8:
+            if idx > 0 and positions[idx - 1] + 1 != pos:
                 return pos - 1
+
 
 def problem6a(data):
     overall_yes = 0
@@ -178,6 +184,7 @@ def problem6a(data):
             overall_yes += len(single_group_answers)
             single_group_answers = set()
     return overall_yes
+
 
 def problem6b(data):
     overall_yes = 0
@@ -205,7 +212,7 @@ def problem7a(data):
         container, content = line.split(" contain ")
         bags_contained = re.sub(remove_numbers, "", content.replace(".", "")).split(", ")
         for bag in bags_contained:
-            if bag[-3:]=="bag":
+            if bag[-3:] == "bag":
                 bag = bag + "s"
             contained_by[bag].add(container)
     target = "shiny gold bags"
@@ -240,9 +247,10 @@ def problem7b(data):
         if contained_bags:
             for inner_bag_data in contained_by[bag]:
                 inner_number, inner_bag = inner_bag_data
-                queue.append((int(inner_number)*int(number), inner_bag))
-        final_number+=int(number)
+                queue.append((int(inner_number) * int(number), inner_bag))
+        final_number += int(number)
     return final_number
+
 
 def problem8a(data):
     accumulator = 0
@@ -254,21 +262,23 @@ def problem8a(data):
         accumulator += accumulator_delta
     return accumulator
 
+
 def problem8_get_pointer_from_line(line, pointer):
     instruction, argument, accumulator = line[:3], line[4:], 0
     if instruction == "nop":
         pointer += 1
     else:
-        if argument[0]=="-":
-            shift = - int(argument[1:])
+        if argument[0] == "-":
+            shift = -int(argument[1:])
         else:
             shift = int(argument[1:])
-        if instruction=="acc":
-            accumulator+=shift
-            pointer+=1
+        if instruction == "acc":
+            accumulator += shift
+            pointer += 1
         else:
-            pointer+=shift
+            pointer += shift
     return pointer, accumulator
+
 
 def problem8b(data):
     instruction_change = {"nop": "jmp", "jmp": "nop"}
@@ -292,47 +302,50 @@ def problem8b(data):
             if pointer == len(data):
                 return accumulator
 
+
 def problem9a(data):
     start, end = 0, 25
     data = [int(e) for e in data]
-    while end<len(data):
+    while end < len(data):
         container_check, good_set = set(), False
         candidates = data[start:end]
         for candidate in candidates:
-            if (data[end]-candidate) not in container_check:
-                container_check.add(data[end]-candidate)
+            if (data[end] - candidate) not in container_check:
+                container_check.add(data[end] - candidate)
         for candidate in candidates:
-            if candidate in container_check and candidate!=(data[end]-candidate):
+            if candidate in container_check and candidate != (data[end] - candidate):
                 good_set = True
         if not good_set:
             return data[end]
-        start+=1
-        end+=1
+        start += 1
+        end += 1
+
 
 def problem9b(data):
     result = problem9a(data)
     data = [int(e) for e in data]
     pointer_1, pointer_2 = 0, 1
-    while pointer_2<len(data):
+    while pointer_2 < len(data):
         interval = data[pointer_1:pointer_2]
         interval_sum = sum(interval)
         if interval_sum == result:
             return min(interval) + max(interval)
         elif interval_sum > result:
-            pointer_1+=1
+            pointer_1 += 1
         if interval_sum < result:
-            pointer_2+=1
+            pointer_2 += 1
+
 
 def problem10a(data):
     sorted_data = sorted([int(e) for e in data])
     last_point, differences = 0, []
     for idx, adapter in enumerate(sorted_data):
-        differences.append(adapter-last_point)
+        differences.append(adapter - last_point)
         last_point = sorted_data[idx]
     # add device difference
     differences.append(3)
     diffs_counts = collections.Counter(differences)
-    return diffs_counts[1]*diffs_counts[3]
+    return diffs_counts[1] * diffs_counts[3]
 
 
 def problem10b(data):
@@ -346,13 +359,15 @@ def problem10b(data):
             if (adapter - current_jolt) <= 3:
                 adapter_paths_count = memory.get(adapter)
                 if not adapter_paths_count:
-                    adapter_paths_count = get_possible_paths_count(adapter, sorted_adapters[idx+1:])
+                    adapter_paths_count = get_possible_paths_count(
+                        adapter, sorted_adapters[(idx + 1) :]  # noqa: E203
+                    )  # noqa: E203
                     memory[adapter] = adapter_paths_count
-                possible_paths_count+=adapter_paths_count
+                possible_paths_count += adapter_paths_count
         return possible_paths_count
 
     sorted_adapters = sorted([int(e) for e in data])
-    sorted_adapters.append(max(sorted_adapters)+3)
+    sorted_adapters.append(max(sorted_adapters) + 3)
     memory = {}
     paths_count = get_possible_paths_count(0, sorted_adapters)
     return paths_count
@@ -364,10 +379,21 @@ def problem11a(data):
         new_grid = change_signs_for_grid_problem11a(data, get_neighbors, 4)
         grid_stable = new_grid == data
         data = new_grid
-    return sum([seat=="#" for row in data for seat in row])
+    return sum([seat == "#" for row in data for seat in row])
+
+
+def problem11b(data):
+    grid_stable = False
+
+    while not grid_stable:
+        get_neighbors_function = functools.partial(get_neighbors_first_seat_seen, data=data)
+        new_grid = change_signs_for_grid_problem11a(data, get_neighbors_function, 5)
+        grid_stable = new_grid == data
+        data = new_grid
+    return sum([seat == "#" for row in data for seat in row])
+
 
 def change_signs_for_grid_problem11a(data, get_neighbors_function, taken_seats_threshold):
-    left_bound, right_bound, lower_bound, upper_bound = 0, len(data[0])-1, 0, len(data)-1
     taken_sign, no_seat_sign, free_sign = "#", ".", "L"
     new_data = copy.deepcopy(data)
     for row_idx, row in enumerate(data):
@@ -375,12 +401,16 @@ def change_signs_for_grid_problem11a(data, get_neighbors_function, taken_seats_t
             if val != no_seat_sign:
                 taken_seats = 0
                 for x, y in get_neighbors_function(e_idx, row_idx):
-                    if (left_bound <= x <= right_bound) and (lower_bound <= y <= upper_bound):
+                    if (0 <= x < len(data[0])) and (0 <= y < len(data)):
                         taken_seats += data[y][x] == taken_sign
 
-                new_value = new_value_for_seat(taken_seats, data[row_idx][e_idx], free_sign, taken_sign, taken_seats_threshold)
+                new_value = new_value_for_seat(
+                    taken_seats, data[row_idx][e_idx], free_sign, taken_sign, taken_seats_threshold
+                )
                 if new_value:
-                    new_data[row_idx] = new_data[row_idx][:e_idx] + new_value + new_data[row_idx][e_idx+1:]
+                    new_data[row_idx] = (
+                        new_data[row_idx][:e_idx] + new_value + new_data[row_idx][(e_idx + 1) :]  # noqa: E203
+                    )
     return new_data
 
 
@@ -395,7 +425,8 @@ def new_value_for_seat(seats_taken, current_seat_value, free_sign, taken_sign, s
 
 def get_neighbors(x_val, y_val):
     possible_movements = list(itertools.permutations([1, -1, 0], 2)) + [(1, 1), (-1, -1)]
-    return [(x_val+x_shift, y_val+y_shift) for x_shift, y_shift in possible_movements]
+    return [(x_val + x_shift, y_val + y_shift) for x_shift, y_shift in possible_movements]
+
 
 def get_neighbors_first_seat_seen(x_val, y_val, data):
     possible_movements = list(itertools.permutations([1, -1, 0], 2)) + [(1, 1), (-1, -1)]
@@ -408,14 +439,3 @@ def get_neighbors_first_seat_seen(x_val, y_val, data):
             new_x, new_y = x_val + x_shift * counter, y_val + y_shift * counter
         final_values.append((new_x, new_y))
     return final_values
-
-def problem11b(data):
-    grid_stable = False
-
-    while not grid_stable:
-        get_neighbors_function = functools.partial(get_neighbors_first_seat_seen, data=data)
-        new_grid = change_signs_for_grid_problem11a(data, get_neighbors_function, 5)
-        grid_stable = new_grid == data
-        data = new_grid
-    return sum([seat=="#" for row in data for seat in row])
-
