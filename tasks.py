@@ -1,6 +1,6 @@
 from invoke import task
 
-APPS_TO_CHECK = "solutions.py"
+APPS_TO_CHECK = "solutions/"
 
 @task
 def check(c):
