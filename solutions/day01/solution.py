@@ -1,12 +1,6 @@
 from typing import List
 
 
-def load_txt_file(file_path: str) -> List[str]:
-    with open(file_path, "r") as handle:
-        content = handle.read().splitlines()
-    return content
-
-
 def problem_1a(data: List[str], target=2020) -> int:
     data = [int(e) for e in data]
     complementaries = {target - e: e for e in data}
