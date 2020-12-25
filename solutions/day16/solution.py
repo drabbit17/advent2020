@@ -37,7 +37,7 @@ def problem16b(data):
                 matching_rules[rule_name][idx] += valid
 
     used_rules_and_pos, number_of_good_tickets, iterations = dict(), len(good_tickets), 0
-    while len(used_rules_and_pos) <= 20 and iterations < 1000:
+    while len(used_rules_and_pos) <= 20 and iterations <= 20:
         for rule, counter in matching_rules.items():
             unique_matches, good_pos = 0, None
             for pos, count in counter.items():
