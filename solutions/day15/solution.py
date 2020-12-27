@@ -1,8 +1,9 @@
 def problem15a(data, stop_point):
     numbers = [int(e) for e in data.split(",")]
-    counter, last_time_memo = len(numbers) - 1, {
-        k: count for k, count in zip(numbers, range(1, len(numbers)))
-    }
+    counter, last_time_memo = (
+        len(numbers) - 1,
+        {k: count for k, count in zip(numbers, range(1, len(numbers)))},
+    )
     next_number = numbers[-1]
 
     while counter < stop_point - 1:
